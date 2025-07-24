@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import sqlite3
 import hashlib
-import plotly.express as px
+import plotly as px
 from datetime import datetime
 from pathlib import Path
 
