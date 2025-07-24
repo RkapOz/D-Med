@@ -2,6 +2,6 @@ streamlit
 pandas
 sqlite3
 hashlib
-plotly.express
+plotly
 datetime
 pathlib
