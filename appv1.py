@@ -369,7 +369,6 @@ def login_screen():
 # (Fungsi-fungsi lain yang tidak berubah seperti get_all_patients, dll. harus disertakan untuk menjalankan kode)
 if __name__ == '__main__':
     main()
-```
 
 
 ### Penjelasan Perubahan Kunci
