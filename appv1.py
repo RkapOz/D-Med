@@ -369,34 +369,3 @@ def login_screen():
 # (Fungsi-fungsi lain yang tidak berubah seperti get_all_patients, dll. harus disertakan untuk menjalankan kode)
 if __name__ == '__main__':
     main()
-
-
-### Penjelasan Perubahan Kunci
-
-
-1.  **Struktur Database (Skema):**
-    * **Tabel `patients`:** Ditambahkan kolom `status` (`TEXT`) untuk menyimpan kondisi pasien ('Hidup', 'Meninggal Dunia', 'Lahir di Sini'). Juga ada kolom `handler_user` untuk mencatat siapa yang mengubah status tersebut.
-    * **Tabel `visits`:** Ditambahkan kolom `tags` (`TEXT`). Daripada membuat banyak kolom `BOOLEAN` (injeksi, ekg, dll.), saya menggunakan pendekatan yang lebih fleksibel. Semua tindakan disimpan sebagai *list* yang diubah menjadi *string JSON*, contoh: `["Injeksi", "Konsultasi"]`. Ini memungkinkan Anda menambah jenis tindakan baru di masa depan tanpa harus mengubah struktur tabel.
-
-
-2.  **Antarmuka Pengguna (UI):**
-    * **Form Tambah Kunjungan:** Input "Hasil/Tindakan" sekarang dibagi dua:
-        * `st.multiselect` untuk memilih *tag* tindakan standar (Injeksi, EKG, dll.).
-        * `st.text_area` untuk deskripsi naratif seperti biasa.
-    * **Form Tambah Pasien:** Ada `st.selectbox` baru untuk "Status Awal", memungkinkan Anda langsung mencatat jika pasien tersebut "Lahir di Sini".
-    * **Detail Pasien:** Ditambahkan tombol untuk mengubah status pasien menjadi "Meninggal Dunia".
-    * **Halaman Baru "Laporan & Statistik":**
-        * **Laporan Bulanan:** Anda memilih tahun dan bulan, lalu klik tombol untuk melihat daftar pasien yang berkunjung pada periode itu. Hasilnya bisa langsung diunduh sebagai file CSV.
-        * **Statistik Tindakan:** Aplikasi secara otomatis menghitung berapa kali setiap *tag* (Injeksi, EKG, dll.) digunakan di semua kunjungan dan menampilkannya dalam tabel.
-        * **Statistik Kelahiran & Kematian:** Menggunakan `st.metric`, aplikasi menampilkan angka total untuk pasien yang dicatat sebagai "Lahir di Sini" dan "Meninggal Dunia".
-
-
-### Bagaimana Ini Bekerja Secara Teknis
-
-
-* **Pelaporan Bulanan:** Fungsi `get_monthly_report` menggunakan query SQL dengan klausa `WHERE v.visit_date BETWEEN ? AND ?` untuk memfilter kunjungan dalam rentang tanggal yang dipilih. `JOIN` digunakan untuk mendapatkan detail pasien dari kunjungan tersebut.
-* **Statistik Tindakan:** Fungsi `get_action_tags_stats` mengambil semua *string JSON* dari kolom `tags`, mem-parsing-nya kembali menjadi *list* di Python, lalu menggunakan `collections.Counter` untuk menghitung kemunculan setiap item secara efisien.
-* **Statistik Vital:** Fungsi `get_life_status_stats` melakukan query sederhana dengan `GROUP BY status` untuk menghitung jumlah pasien untuk setiap status ('Lahir di Sini', 'Meninggal Dunia').
-
-
-Dengan pembaruan ini, aplikasi Anda telah berevolusi dari sekadar pencatatan data menjadi alat pendukung keputusan klinis dan administratif yang jauh lebih ku
