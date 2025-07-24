@@ -3,5 +3,3 @@ pandas
 sqlite3
 hashlib
 plotly
-datetime
-pathlib
