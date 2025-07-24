@@ -1,0 +1,7 @@
+streamlit
+pandas
+sqlite3
+hashlib
+plotly.express
+datetime
+pathlib
