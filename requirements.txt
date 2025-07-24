@@ -1,6 +1,5 @@
 streamlit
 pandas
-hashlib
 plotly.express
 datetime
 pathlib
